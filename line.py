@@ -1,3 +1,5 @@
+# Line class
+
 class Line():
     def __init__(self, slope):
         self.slope = slope

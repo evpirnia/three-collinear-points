@@ -45,3 +45,5 @@ with open("output.csv", "w") as output:
         if len(line.points) > 2:
             output.write(line.getOutput(counter))
             counter = counter + 1
+
+print("Result outputted to output.csv")
