@@ -10,40 +10,41 @@ def getLine(lines, slope):
         if line.slope == slope:
             return line
 
+outputFilename = "output.csv"
 points = []
 lines = []
 slopes = []
 
-if len(sys.argv) < 2:
-    print("error: please enter CSV filename")
+if(len(sys.argv)) == 1:
+    print("error: please enter input CSV filename")
 else:
-    filename = sys.argv[1]
-    with open(filename, "r") as inputfile:
+    # reading input file contents
+    inputfilename = sys.argv[1]
+    with open(inputfilename, "r") as inputfile:
         for line in inputfile:
             x, y = line.strip().split(",")
             newPoint = Point(x, y)
             points.append(newPoint)
-
-for currentPoint in points:
-    for nextPoint in points[1:]:
-        if currentPoint != nextPoint:
-            slope = getSlope(currentPoint, nextPoint)
-            if slope not in slopes:
-                newLine = Line(slope)
-                newLine.addPoint(currentPoint)
-                newLine.addPoint(nextPoint)
-                lines.append(newLine)
-                slopes.append(slope)
-            else:
-                existingLine = getLine(lines, slope)
-                existingLine.addPoint(currentPoint)
-                existingLine.addPoint(nextPoint)
-
-counter = 1
-with open("output.csv", "w") as output:
-    for line in lines:
-        if len(line.points) > 2:
-            output.write(line.getOutput(counter))
-            counter = counter + 1
-
-print("Result outputted to output.csv")
+    # determining collinear points by obtaining slope between points
+    for currentPoint in points:
+        for nextPoint in points[1:]:
+            if currentPoint != nextPoint:
+                newSlope = getSlope(currentPoint, nextPoint)
+                if newSlope not in slopes:
+                    newLine = Line(newSlope)
+                    newLine.addPoint(currentPoint)
+                    newLine.addPoint(nextPoint)
+                    lines.append(newLine)
+                    slopes.append(newSlope)
+                else:
+                    existingLine = getLine(lines, newSlope)
+                    existingLine.addPoint(currentPoint)
+                    existingLine.addPoint(nextPoint)
+    # writing results to output file
+    counter = 1
+    with open(outputFilename, "w") as output:
+        for line in lines:
+            if len(line.points) > 2:
+                output.write(line.getOutput(counter))
+                counter = counter + 1
+    print "Result outputted to " + outputFilename
