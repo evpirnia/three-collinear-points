@@ -28,5 +28,7 @@ The expected output would be:
 To run, enter the following command:
 
 ```bash
-> python main.py $INPUT_FILENAME
+> python main.py -i $INPUT_FILENAME -o $OUTPUT_FILENAME
 ```
+
+If -o is not specified, then the output filename will default to "output.csv".

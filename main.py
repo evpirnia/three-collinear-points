@@ -1,4 +1,5 @@
 import sys
+import argparse
 from point import Point
 from line import Line
 
@@ -10,17 +11,20 @@ def getLine(lines, slope):
         if line.slope == slope:
             return line
 
-outputFilename = "output.csv"
 points = []
 lines = []
 slopes = []
 
-if(len(sys.argv)) == 1:
+parser = argparse.ArgumentParser()
+parser.add_argument("-i", help="input file name")
+parser.add_argument("-o", help="output file name", default="output.csv")
+args = parser.parse_args()
+
+if not args.i:
     print("error: please enter input CSV filename")
 else:
     # reading input file contents
-    inputfilename = sys.argv[1]
-    with open(inputfilename, "r") as inputfile:
+    with open(args.i, "r") as inputfile:
         for line in inputfile:
             x, y = line.strip().split(",")
             newPoint = Point(x, y)
@@ -42,9 +46,9 @@ else:
                     existingLine.addPoint(nextPoint)
     # writing results to output file
     counter = 1
-    with open(outputFilename, "w") as output:
+    with open(args.o, "w") as outputfile:
         for line in lines:
             if len(line.points) > 2:
-                output.write(line.getOutput(counter))
+                outputfile.write(line.getOutput(counter))
                 counter = counter + 1
-    print "Result outputted to " + outputFilename
+    print "Result outputted to " + args.o
